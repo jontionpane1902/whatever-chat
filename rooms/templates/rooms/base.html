@@ -5,7 +5,106 @@
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
     crossorigin="anonymous"
   />
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"
+  ></script>
 </head>
+
 <body>
-  <h1>This is room page</h1>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navResponsive"
+        aria-controls="navResponsive"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand">Chatter</a>
+      <div class="collapse navbar-collapse" id="navResponsive">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <form class="d-flex pt-3" action="" method="get">
+            {% csrf_token %}
+            <input
+              class="form-control me-2"
+              name="searchRoom"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </ul>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Create Room
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="row justify-content-around">
+    {% for room in room_list %}
+    <div class="col-3 my-2">
+      <div class="card">
+        <div class="card-header">{{room.get_type_display}}</div>
+        <div class="card-body">
+          <h5 class="card-title">{{room.name}}</h5>
+          <p class="card-text">{{room.desc}}</p>
+          <a href="chat?channel={{room.channel}}" class="btn btn-primary"
+            >Join Room</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <form class="modal-content" action="" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Room detail</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" style="display: inline-grid">{{room_form}}</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>

@@ -5,7 +5,8 @@ from rooms.models import Rooms
 
 
 def index(request: WSGIRequest):
-    if not request.session.get('name', ''):
+    name = request.session.get('name', '')
+    if not name:
         return redirect('main')
     room_list = Rooms.objects.all()
     room_form = RoomsForm(request.POST or None, request.FILES or None)
@@ -18,6 +19,7 @@ def index(request: WSGIRequest):
     return render(
         request,
         'rooms/base.html', {
+            'user_name': name,
             'room_list': room_list,
             'room_form': room_form
         }

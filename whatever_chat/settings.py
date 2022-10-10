@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+
     'main',
     'rooms',
     'chat',
@@ -86,6 +88,15 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

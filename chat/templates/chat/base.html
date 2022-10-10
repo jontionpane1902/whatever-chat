@@ -17,7 +17,13 @@
 <body>
   <h1>Chat Channel: {{channel}}</h1>
   <div class="p-3">
-    <textarea id="chat-log" class="form-control" cols="100" rows="20"></textarea
+    <textarea
+      readonly
+      id="chat-log"
+      class="form-control"
+      cols="100"
+      rows="20"
+    ></textarea
     ><br />
     <input id="chat-message-input" class="w-75" type="text" />
     <button
@@ -37,7 +43,8 @@
 
     chatSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
-      document.querySelector("#chat-log").value += data.message + "\n";
+      document.querySelector("#chat-log").value +=
+        data.name + ": " + data.message + "\n";
     };
 
     chatSocket.onclose = function () {
@@ -51,15 +58,23 @@
       }
     };
 
-    document.querySelector("#chat-message-submit").onclick = function () {
+    document.querySelector("#chat-message-submit").onclick = function (e) {
       const messageInputDom = document.querySelector("#chat-message-input");
       const message = messageInputDom.value;
-      chatSocket.send(
-        JSON.stringify({
+      console.log(window.location.host);
+      fetch(`http://${window.location.host}/api/chat`, {
+        method: "POST",
+        body: JSON.stringify({
           message: message,
-        })
-      );
+          room: "{{channel}}",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Referrer-Policy": "same-origin",
+        },
+      });
       messageInputDom.value = "";
+      e.preventDefault();
     };
   </script>
 </body>

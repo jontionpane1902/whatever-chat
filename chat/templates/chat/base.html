@@ -48,7 +48,7 @@
   </div>
   <script>
     const chatSocket = new WebSocket(
-      `ws://localhost:8000/ws/chat/${CryptoJS.MD5("{{channel}}")}/`
+      `ws://${window.location.host}/ws/chat/${CryptoJS.MD5("{{channel}}")}/`
     );
 
     chatSocket.onmessage = function (e) {
